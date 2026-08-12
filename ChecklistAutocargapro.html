@@ -3,257 +3,642 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checklist Preoperacional - AutoCarga Pro</title>
-    <!-- Librería para generar PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <title>AUTOCARGA PRO - Manuales de Operación</title>
     <style>
-        * { box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 10px; }
-        .container { max-width: 800px; background: #fff; padding: 20px; margin: 0 auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-        
-        .header { background: #9b2c2c; color: white; padding: 12px; border-radius: 6px; text-align: center; }
-        .header h2 { margin: 0; font-size: 16px; text-transform: uppercase; }
-        .header p { margin: 3px 0 0 0; font-size: 12px; color: #fed7d7; }
-        
-        .section-title { background: #c53030; color: white; padding: 6px 10px; font-weight: bold; margin-top: 15px; border-radius: 4px; font-size: 13px; page-break-after: avoid; }
-        
-        /* SALTO DE PÁGINA FORZADO EN SECCIÓN 4 */
-        .page-break { page-break-before: always; margin-top: 0 !important; }
+        :root {
+            --bg: #ffffff;
+            --card-bg: #f8fafc;
+            --text-main: #000000;
+            --primary-red: #dc2626;
+            --dark-red: #991b1b;
+            --btn-green: #16a34a;
+            --btn-blue: #2563eb;
+            --btn-yellow: #eab308;
+            --btn-orange: #f97316;
+            --helios-orange: #ea580c;
+        }
 
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
-        
-        label { font-size: 12px; font-weight: bold; color: #9b2c2c; display: block; margin-bottom: 2px; }
-        
-        input[type="text"], input[type="date"], input[type="time"], select { width: 100%; padding: 6px; border: 1px solid #cbd5e0; border-radius: 4px; font-size: 12px; transition: border-color 0.2s; }
-        
-        /* ESTILO PARA CAMPOS FALTANTES REGISTRADOS EN ROJO */
-        .input-error { border: 2px solid #e53e3e !important; background-color: #fff5f5; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
 
-        /* FILAS DEL CHECKLIST */
-        .chk-row { padding: 8px 0; border-bottom: 1px solid #edf2f7; page-break-inside: avoid; }
-        .chk-header { display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 500; }
-        .chk-text { flex: 1; padding-right: 10px; }
-        .chk-options { display: flex; gap: 8px; }
-        .chk-options label { font-size: 11px; font-weight: bold; cursor: pointer; margin: 0; color: #2d3748; }
-        .chk-options input { margin-right: 2px; accent-color: #c53030; }
-        
-        /* CAMPO DE OBSERVACIÓN SI FALLA */
-        .obs-input { display: none; margin-top: 6px; }
-        .obs-input input { border: 1px solid #e53e3e; background-color: #fff5f5; color: #9b2c2c; font-weight: 500; }
-        
-        .btn-submit { background: #c53030; color: white; border: none; padding: 12px 20px; font-size: 15px; font-weight: bold; width: 100%; border-radius: 6px; margin-top: 20px; cursor: pointer; }
-        .btn-submit:hover { background: #9b2c2c; }
-        
-        .danger-box { background: #fff5f5; border-left: 4px solid #e53e3e; padding: 8px; margin-top: 15px; font-size: 11px; color: #c53030; page-break-inside: avoid; }
-        
-        @media (max-width: 600px) { 
-            .grid-2 { grid-template-columns: 1fr; }
-            .chk-header { flex-direction: column; align-items: flex-start; gap: 5px; }
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px 0;
+            overflow-x: hidden;
+        }
+
+        /* --- MENÚ PRINCIPAL --- */
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            width: 90%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .menu-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-red);
+            margin-bottom: 5px;
+        }
+
+        .menu-subtitle {
+            font-size: 1.1rem;
+            color: #475569;
+            margin-bottom: 20px;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 25px 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .card-efi { border-color: var(--primary-red); }
+        .card-efi:hover { background-color: #fef2f2; }
+
+        .card-helios { border-color: var(--helios-orange); }
+        .card-helios:hover { background-color: #fff7ed; }
+
+        .menu-card h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+        }
+
+        .card-efi h3 { color: var(--primary-red); }
+        .card-helios h3 { color: var(--helios-orange); }
+
+        .menu-card p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* --- VISIBILIDAD DE SECCIONES --- */
+        .view-section {
+            display: none;
+            width: 100%;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .view-section.active-view {
+            display: flex;
+        }
+
+        /* --- BOTÓN VOLVER --- */
+        .btn-back {
+            background-color: #64748b;
+            color: #ffffff;
+            border: none;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .btn-back:hover {
+            background-color: #334155;
+        }
+
+        /* --- ESTRUCTURA DE PRESENTACIÓN --- */
+        .deck-container {
+            width: 92%;
+            max-width: 900px;
+            height: 78vh;
+            position: relative;
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border: 2px solid var(--primary-red);
+            overflow: hidden;
+        }
+
+        .deck-helios {
+            border-color: var(--helios-orange);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.5s ease-in-out;
+            pointer-events: none;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+            pointer-events: auto;
+        }
+
+        .slide.prev {
+            opacity: 0;
+            transform: translateX(-100%);
+        }
+
+        .brand-badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: var(--primary-red);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border: 1px solid var(--primary-red);
+            align-self: flex-start;
+        }
+
+        .badge-helios {
+            background: #ffedd5;
+            color: var(--helios-orange);
+            border-color: var(--helios-orange);
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-red);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .title-helios {
+            color: var(--helios-orange);
+        }
+
+        h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary-red);
+            margin-bottom: 15px;
+        }
+
+        .h2-helios {
+            color: var(--helios-orange);
+        }
+
+        p {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .step-number {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary-red);
+            margin-bottom: 6px;
+        }
+
+        .step-helios {
+            color: var(--helios-orange);
+        }
+
+        .efi-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: white;
+            margin: 0 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+            vertical-align: middle;
+        }
+        .efi-green { background-color: var(--btn-green); }
+        .efi-blue { background-color: var(--btn-blue); }
+        .efi-yellow { background-color: var(--btn-yellow); color: #000000; }
+        .efi-orange { background-color: var(--btn-orange); }
+        .efi-helios-orange { background-color: var(--helios-orange); color: white; }
+
+        .info-card {
+            background: #fff;
+            border-left: 5px solid var(--primary-red);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .card-helios-border {
+            border-left-color: var(--helios-orange);
+        }
+
+        .warning-card {
+            background: #fef2f2;
+            border-left: 5px solid var(--primary-red);
+            padding: 15px;
+            border-radius: 0 12px 12px 0;
+            margin-top: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .warning-card h3 {
+            color: var(--primary-red);
+            margin-bottom: 6px;
+            font-size: 1rem;
+        }
+
+        .controls {
+            width: 92%;
+            max-width: 900px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .btn-nav {
+            background-color: var(--primary-red);
+            color: #ffffff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-helios {
+            background-color: var(--helios-orange);
+        }
+
+        .btn-nav:hover { opacity: 0.9; }
+
+        .btn-nav:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            background-color: #9ca3af;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #cbd5e1;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background-color: var(--primary-red);
+            width: 20px;
+            border-radius: 10px;
+        }
+
+        .dot-helios.active {
+            background-color: var(--helios-orange);
+        }
+
+        @media (max-width: 600px) {
+            .menu-grid { grid-template-columns: 1fr; }
+            .deck-container { height: 80vh; width: 95%; }
+            .slide { padding: 20px; }
+            h1 { font-size: 1.8rem; }
+            h2 { font-size: 1.3rem; }
+            p { font-size: 0.95rem; line-height: 1.4; }
+            .controls { width: 95%; margin-top: 5px; }
+            .btn-nav { padding: 6px 15px; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
-<div class="container" id="checklist-form">
-    <div class="header">
-        <h2>LISTA DE CHEQUEO PREOPERACIONAL – GRÚAS AUTOCARGA PRO</h2>
-        <p>Seguridad Primero: Inspección previa a la operación</p>
+    <!-- MENÚ PRINCIPAL -->
+    <div class="menu-container" id="mainMenu">
+        <span class="brand-badge" style="align-self: center;">AUTOCARGA PRO</span>
+        <h1 class="menu-title">Selecciona la Plataforma</h1>
+        <p class="menu-subtitle">Guía de uso e instrucciones paso a paso para conductores</p>
+        
+        <div class="menu-grid">
+            <div class="menu-card card-efi" onclick="openModule('efiView')">
+                <h3>EFI - AXA</h3>
+                <p>Gestión y toma de servicios para operaciones AXA</p>
+            </div>
+            
+            <div class="menu-card card-helios" onclick="openModule('heliosView')">
+                <h3>HELIOS - CONNECT</h3>
+                <p>Gestión y toma de servicios para operaciones HELIOS</p>
+            </div>
+        </div>
     </div>
 
-    <!-- DATOS GENERALES CON CAMPOS OBLIGATORIOS -->
-    <div class="grid-2">
-        <div><label>Fecha: *</label><input type="date" id="fecha" required></div>
-        <div><label>Hora: *</label><input type="time" id="hora" required></div>
-        <div><label>Placa: *</label><input type="text" id="placa" placeholder="Ej: ABC-123" required></div>
-        <div><label>Kilometraje: *</label><input type="text" id="km" placeholder="Ej: 120,500" required></div>
-        <div><label>Operador: *</label><input type="text" id="operador" placeholder="Nombre completo" required></div>
-        <div><label>Ubicación: *</label><input type="text" id="ubicacion" placeholder="Ciudad / Sitio" required></div>
-    </div>
+    <!-- SECCIÓN: EFI - AXA -->
+    <div class="view-section" id="efiView">
+        <button class="btn-back" onclick="showMenu()">← Volver al Menú</button>
 
-    <!-- FUNCIÓN PARA CREAR ÍTEMS -->
-    <script>
-        let itemCounter = 0;
-        function crearItem(texto) {
-            itemCounter++;
-            const id = 'item_' + itemCounter;
-            document.write(`
-                <div class="chk-row">
-                    <div class="chk-header">
-                        <span class="chk-text">${texto}</span>
-                        <div class="chk-options">
-                            <label><input type="radio" name="${id}" value="OK" checked onclick="toggleObs('${id}', false)"> ✓ OK</label>
-                            <label style="color:#c53030;"><input type="radio" name="${id}" value="MAL" onclick="toggleObs('${id}', true)"> ✖ MAL</label>
-                            <label><input type="radio" name="${id}" value="NA" onclick="toggleObs('${id}', false)"> N/A</label>
-                        </div>
-                    </div>
-                    <div class="obs-input" id="obs_box_${id}">
-                        <input type="text" placeholder="⚠ Describa la falla u observación aquí..." id="obs_txt_${id}">
-                    </div>
+        <div class="deck-container" id="deckEfi">
+            <!-- Slide 1 -->
+            <div class="slide active">
+                <span class="brand-badge">AUTOCARGA PRO</span>
+                <h1>Uso y Manejo Correcto de EFI</h1>
+                <p style="font-size: 1.1rem; font-weight: 600;">Guía paso a paso en la toma y gestión de servicios para conductores de grúa.</p>
+                <div class="info-card">
+                    <p style="margin:0;">📌 <strong>Importante:</strong> Los conductores de las grúas son los responsables directos de subir todas las evidencias a la plataforma EFI para garantizar la validez del servicio.</p>
                 </div>
-            `);
-        }
-    </script>
+            </div>
 
-    <!-- 1. INSPECCIÓN GENERAL -->
-    <div class="section-title">1. INSPECCIÓN GENERAL DEL VEHÍCULO</div>
-    <script>
-        crearItem("Estado general de la carrocería y estructura.");
-        crearItem("No presenta daños visibles que afecten la operación.");
-        crearItem("Vidrios, espejos y parabrisas en buen estado.");
-        crearItem("Puertas y compartimientos cierran correctamente.");
-        crearItem("Sin fugas de aceite, combustible, refrigerante o líquidos.");
-        crearItem("Sin elementos sueltos con riesgo de desprendimiento.");
-    </script>
+            <!-- Slide 2 -->
+            <div class="slide">
+                <span class="brand-badge">Pasos 1 y 2</span>
+                <h2>Recepción y Aceptación</h2>
+                <div class="step-number">PASO 01</div>
+                <p>Cuando llegue un servicio por EFI, nosotros te lo vamos a confirmar por <strong>WhatsApp</strong> y te lo enviaremos por <strong>EFI</strong>.</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+                <div class="step-number">PASO 02</div>
+                <p>Apenas suene tu celular, es porque te llegó el servicio. Ahí le darás en <span class="efi-btn efi-green">ACEPTAR</span> (cuadro pequeño verde, ¡OJO!) y luego le darás en <span class="efi-btn efi-blue">INICIAR</span> (botón azul).</p>
+            </div>
 
-    <!-- 2. NIVELES Y MECÁNICA -->
-    <div class="section-title">2. NIVELES Y SISTEMAS MECÁNICOS</div>
-    <script>
-        crearItem("Nivel de aceite de motor.");
-        crearItem("Nivel de refrigerante.");
-        crearItem("Nivel de líquido de frenos / dirección (si aplica).");
-        crearItem("Nivel de combustible.");
-        crearItem("Estado visible de correas y mangueras.");
-    </script>
+            <!-- Slide 3 -->
+            <div class="slide">
+                <span class="brand-badge">Pasos 3 y 4</span>
+                <h2>Arribo y Localización</h2>
+                <div class="step-number">PASO 03</div>
+                <p>Te vas a dirigir al lugar de origen. Apenas llegues al sitio, <strong>sube las fotografías iniciales</strong> a EFI.</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+                <div class="step-number">PASO 04</div>
+                <p>Luego de subir las fotos, le darás en el botón <span class="efi-btn efi-yellow">LOCALIZAR</span> (cuadro amarillo). Pones los <strong>últimos 3 dígitos de la placa</strong> para que te deje localizar.</p>
+            </div>
 
-    <!-- 3. LLANTAS -->
-    <div class="section-title">3. LLANTAS Y RUEDAS</div>
-    <script>
-        crearItem("Presión de llantas dentro del rango recomendado.");
-        crearItem("Banda de rodamiento sin cortes, deformaciones o abultamientos.");
-        crearItem("Tuercas y elementos de fijación seguros.");
-        crearItem("Llanta de repuesto lista para uso (si aplica).");
-    </script>
+            <!-- Slide 4 -->
+            <div class="slide">
+                <span class="brand-badge">Paso 5</span>
+                <h2>Reporte de Daños y Firmas</h2>
+                <div class="step-number">PASO 05</div>
+                <p>Diligencia el reporte de daños en la App EFI. Ahí van la <strong>firma del conductor y la firma digital del cliente</strong>.</p>
+                <div class="warning-card">
+                    <h3>⚠️ Requisito Obligatorio:</h3>
+                    <p style="margin:0;">Sin este reporte firmado, el servicio <strong>NO será válido</strong>.</p>
+                </div>
+            </div>
 
-    <!-- 4. SISTEMA ELÉCTRICO (CON SALTO DE PÁGINA OBLIGATORIO) -->
-    <div class="section-title page-break">4. SISTEMA ELÉCTRICO E ILUMINACIÓN</div>
-    <script>
-        crearItem("Luces delanteras, traseras, freno y reversa operativas.");
-        crearItem("Direccionales y Luces de emergencia.");
-        crearItem("Balizas / luces luminosas de advertencia.");
-        crearItem("Pito/bocina y tablero sin alertas o testigos activos.");
-    </script>
+            <!-- Slide 5 -->
+            <div class="slide">
+                <span class="brand-badge">Pasos 6 y 7</span>
+                <h2>Traslado y Finalización</h2>
+                <div class="step-number">PASO 06</div>
+                <p>Para iniciar el trayecto, le darás en el botón <span class="efi-btn efi-orange">TRASLADANDO</span> (botón naranja).</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+                <div class="step-number">PASO 07</div>
+                <p>Al llegar al destino, sube las <strong>fotos del descargue</strong>. Al dar <span class="efi-btn efi-green">FINALIZAR</span>, seleccionas en Tipo de localización: <strong>Domicilio</strong> y das por terminado el servicio.</p>
+            </div>
 
-    <!-- 5. SEGURIDAD -->
-    <div class="section-title">5. EQUIPOS Y ELEMENTOS DE SEGURIDAD</div>
-    <script>
-        crearItem("Extintor vigente y con presión adecuada.");
-        crearItem("Botiquín, conos y banderolas completas.");
-        crearItem("Chaleco reflectivo, casco, guantes y linterna.");
-        crearItem("Herramientas básicas y equipo de carretera regulatorio.");
-    </script>
+            <!-- Slide 6 -->
+            <div class="slide">
+                <span class="brand-badge">Puntos Clave</span>
+                <h2>Reglas Obligatorias</h2>
+                <div class="warning-card" style="margin-bottom: 10px;">
+                    <h3>🚜 Maniobras Especiales (Patines/Sótano)</h3>
+                    <p style="margin:0;">Si hay maniobra, <strong>sube fotos donde se evidencie</strong>. De lo contrario, no será válido el servicio.</p>
+                </div>
+                <div class="info-card">
+                    <h3>📍 Tiempos Correctos y GPS</h3>
+                    <p style="margin:0;">Todos los pasos (Iniciado, Localizado, Trasladando, Finalizado) deben hacerse <strong>en tiempo real y en el sitio exacto</strong>.</p>
+                </div>
+            </div>
 
-    <!-- 6. GRÚA -->
-    <div class="section-title">6. EQUIPO ESPECÍFICO DE LA GRÚA</div>
-    <script>
-        crearItem("Cable, cadenas, eslingas, ganchos y grilletes OK.");
-        crearItem("Wincher, planchón, rampas y sistemas de arrastre operativos.");
-        crearItem("Pasadores, seguros, anclajes e hidráulico sin fugas.");
-    </script>
+            <!-- Slide 7 -->
+            <div class="slide" style="text-align: center;">
+                <span class="brand-badge" style="align-self: center;">Operación Excelente</span>
+                <h1 style="font-size: 1.8rem; margin-top: 10px;">¡El uso correcto de EFI nos garantiza buen trabajo y buena operación!</h1>
+                <p style="margin-top: 25px; font-size: 1.2rem; font-weight: 600;">Muchas Gracias</p>
+                <p style="font-weight: 800; font-size: 1.6rem; color: var(--primary-red); margin-top: 5px;">AUTOCARGA PRO</p>
+            </div>
+        </div>
 
-    <!-- 7 & 8. ENCENDIDO -->
-    <div class="section-title">7 & 8. PRUEBAS DE ENCENDIDO</div>
-    <script>
-        crearItem("Foto tomada al tablero de instrumentos (KM, combustible, testigos).");
-        crearItem("Encendido normal sin ruidos anormales ni fugas.");
-        crearItem("Presión de aceite, temperatura, frenos y dirección OK.");
-        crearItem("Temperatura del motor dentro de parámetros normales OK.");
-        crearItem("No existen alarmas o testigos de falla que impidan la operación OK.");
-        crearItem("NNo se observan fugas después del encendido.OK.");
-
-    </script>
-
-    <!-- 9. OPERADOR -->
-    <div class="section-title">9. CONDICIÓN DEL OPERADOR</div>
-    <script>
-        crearItem("Condición física/mental óptima (descanso OK, sin alcohol/drogas).");
-        crearItem("Licencia vigente y uso completo de EPP.");
-    </script>
-
-    <!-- CRITERIO NO OPERACIÓN -->
-    <div class="danger-box">
-        <strong>⛔ CRITERIO DE NO OPERACIÓN:</strong> Si algún elemento crítico falla o está marcado en "✖ MAL", el vehículo NO debe operar y lo debe reportar de inmediato a la operación de Central.
+        <div class="controls">
+            <button class="btn-nav" onclick="changeSlide('efiView', -1)">Anterior</button>
+            <div class="progress-dots"></div>
+            <button class="btn-nav" onclick="changeSlide('efiView', 1)">Siguiente</button>
+        </div>
     </div>
 
-    <!-- AUTORIZACIÓN Y BOTÓN -->
-    <div style="margin-top: 15px; page-break-inside: avoid;">
-        <label>¿Vehículo autorizado para operar?</label>
-        <select id="autorizado" style="font-weight: bold;">
-            <option value="SÍ">SÍ - AUTORIZADO</option>
-            <option value="NO">NO - NO AUTORIZADO</option>
-        </select>
+    <!-- SECCIÓN: HELIOS - CONNECT -->
+    <div class="view-section" id="heliosView">
+        <button class="btn-back" onclick="showMenu()">← Volver al Menú</button>
+
+        <div class="deck-container deck-helios" id="deckHelios">
+            <!-- Slide 1: Portada -->
+            <div class="slide active">
+                <span class="brand-badge badge-helios">AUTOCARGA PRO</span>
+                <h1 class="title-helios">Uso y Manejo Correcto de HELIOS</h1>
+                <p style="font-size: 1.1rem; font-weight: 600;">Guía paso a paso en la toma y gestión de servicios en HELIOS - CONNECT.</p>
+                <div class="info-card card-helios-border">
+                    <p style="margin:0;">📌 <strong>Importante:</strong> Seguir los botones del sistema en tiempo real y subir el reporte físico garantiza la validez del servicio.</p>
+                </div>
+            </div>
+
+            <!-- Slide 2: Paso 1 y 2 -->
+            <div class="slide">
+                <span class="brand-badge badge-helios">Pasos 1 y 2</span>
+                <h2 class="h2-helios">Recepción e Iniciar Ruta</h2>
+                <div class="step-number step-helios">PASO 01</div>
+                <p>El servicio puede llegar por la App si el conductor está conectado, o la operación se los puede mandar. Los conductores le tienen que dar en <span class="efi-btn efi-helios-orange">ACEPTAR</span>.</p>
+                <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 12px 0;">
+                <div class="step-number step-helios">PASO 02</div>
+                <p>Luego tienen que presionar el botón <span class="efi-btn efi-helios-orange">ON ROUTE</span> que los pondrá como que se están movilizando al punto de origen.</p>
+            </div>
+
+            <!-- Slide 3: Paso 3 -->
+            <div class="slide">
+                <span class="brand-badge badge-helios">Paso 3</span>
+                <h2 class="h2-helios">Arribo y Cargue</h2>
+                <div class="step-number step-helios">PASO 03</div>
+                <p>Después de llegar al punto, presionan el botón <span class="efi-btn efi-helios-orange">ARRIVED</span>.</p>
+                <p style="margin-top: 10px;">Al cargar el vehículo, presionan el botón <span class="efi-btn efi-helios-orange">TOWED</span> que indica que el vehículo ya se cargó.</p>
+            </div>
+
+            <!-- Slide 4: Paso 4 -->
+            <div class="slide">
+                <span class="brand-badge badge-helios">Paso 4</span>
+                <h2 class="h2-helios">Destino y Evidencias</h2>
+                <div class="step-number step-helios">PASO 04</div>
+                <p>Luego de eso, cuando lleguen al destino, tienen que subir <strong>todas las evidencias del cargue y descargue</strong> del vehículo.</p>
+                <div class="warning-card" style="border-left-color: var(--helios-orange); background-color: #fff7ed;">
+                    <h3 style="color: var(--helios-orange);">⚠️ SÚPER IMPORTANTE:</h3>
+                    <p style="margin:0;">Deben subir el <strong>reporte de daños en físico</strong>. De lo contrario, el servicio <strong>NO SERÁ VÁLIDO</strong>.</p>
+                </div>
+            </div>
+
+            <!-- Slide 5: Cierre -->
+            <div class="slide" style="text-align: center;">
+                <span class="brand-badge badge-helios" style="align-self: center;">Operación Excelente</span>
+                <h1 class="title-helios" style="font-size: 1.8rem; margin-top: 10px;">¡El uso correcto de HELIOS - CONNECT nos garantiza buen trabajo y excelente operación!</h1>
+                <p style="margin-top: 25px; font-size: 1.2rem; font-weight: 600;">Muchas Gracias</p>
+                <p style="font-weight: 800; font-size: 1.6rem; color: var(--helios-orange); margin-top: 5px;">AUTOCARGA PRO</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-nav btn-helios" onclick="changeSlide('heliosView', -1)">Anterior</button>
+            <div class="progress-dots"></div>
+            <button class="btn-nav btn-helios" onclick="changeSlide('heliosView', 1)">Siguiente</button>
+        </div>
     </div>
 
-    <button id="btn-descargar" class="btn-submit" onclick="generarPDF()">DESCARGAR CHECKLIST EN PDF</button>
-</div>
+    <script>
+        // ESTADO DE NAVEGACIÓN INDEPENDIENTE
+        const state = {
+            efiView: { currentSlide: 0 },
+            heliosView: { currentSlide: 0 }
+        };
 
-<script>
-    function toggleObs(id, mostrar) {
-        const box = document.getElementById('obs_box_' + id);
-        if (mostrar) {
-            box.style.display = 'block';
-        } else {
-            box.style.display = 'none';
-            document.getElementById('obs_txt_' + id).value = '';
+        // INICIALIZACIÓN DE PUNTOS DE PROGRESO
+        function initDots(viewId) {
+            const container = document.querySelector(`#${viewId} .progress-dots`);
+            const slides = document.querySelectorAll(`#${viewId} .slide`);
+            const isHelios = viewId === 'heliosView';
+
+            container.innerHTML = '';
+            slides.forEach((_, index) => {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (isHelios) dot.classList.add('dot-helios');
+                if (index === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(viewId, index));
+                container.appendChild(dot);
+            });
         }
-    }
 
-    function generarPDF() {
-        // Lista de campos obligatorios
-        const camposObligatorios = [
-            { id: 'fecha', nombre: 'Fecha' },
-            { id: 'hora', nombre: 'Hora' },
-            { id: 'placa', nombre: 'Placa' },
-            { id: 'km', nombre: 'Kilometraje' },
-            { id: 'operador', nombre: 'Operador' },
-            { id: 'ubicacion', nombre: 'Ubicación' }
-        ];
+        // ACTUALIZAR SLIDES
+        function updateSlides(viewId) {
+            const viewState = state[viewId];
+            const slides = document.querySelectorAll(`#${viewId} .slide`);
+            const dots = document.querySelectorAll(`#${viewId} .dot`);
+            const prevBtn = document.querySelectorAll(`#${viewId} .btn-nav`)[0];
+            const nextBtn = document.querySelectorAll(`#${viewId} .btn-nav`)[1];
 
-        let hayErrores = false;
-        let primerCampoVacio = null;
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === viewState.currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < viewState.currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
 
-        // Validar cada campo
-        camposObligatorios.forEach(campo => {
-            const input = document.getElementById(campo.id);
-            if (!input.value.trim()) {
-                input.classList.add('input-error');
-                hayErrores = true;
-                if (!primerCampoVacio) primerCampoVacio = input;
-            } else {
-                input.classList.remove('input-error');
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === viewState.currentSlide);
+            });
+
+            prevBtn.disabled = viewState.currentSlide === 0;
+            nextBtn.disabled = viewState.currentSlide === slides.length - 1;
+        }
+
+        function changeSlide(viewId, direction) {
+            const slides = document.querySelectorAll(`#${viewId} .slide`);
+            const viewState = state[viewId];
+            viewState.currentSlide = Math.max(0, Math.min(slides.length - 1, viewState.currentSlide + direction));
+            updateSlides(viewId);
+        }
+
+        function goToSlide(viewId, index) {
+            state[viewId].currentSlide = index;
+            updateSlides(viewId);
+        }
+
+        // CONTROL DE VISTAS Y MENÚ
+        function openModule(viewId) {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
+            
+            const activeSection = document.getElementById(viewId);
+            activeSection.classList.add('active-view');
+            
+            // Reiniciar diapositiva al entrar
+            state[viewId].currentSlide = 0;
+            initDots(viewId);
+            updateSlides(viewId);
+        }
+
+        function showMenu() {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active-view'));
+            document.getElementById('mainMenu').style.display = 'flex';
+        }
+
+        // SOPORTE TECLADO (Afecta a la vista activa)
+        document.addEventListener('keydown', (e) => {
+            const activeView = document.querySelector('.view-section.active-view');
+            if (activeView) {
+                if (e.key === 'ArrowRight') changeSlide(activeView.id, 1);
+                if (e.key === 'ArrowLeft') changeSlide(activeView.id, -1);
             }
         });
 
-        if (hayErrores) {
-            alert('⚠️ Por favor complete todos los datos generales (Fecha, Hora, Placa, KM, Operador y Ubicación) antes de descargar el PDF.');
-            if (primerCampoVacio) primerCampoVacio.focus();
-            return; // Cancela la generación del PDF
-        }
+        // SOPORTE TÁCTIL (SWIPE)
+        let touchstartX = 0;
+        let touchendX = 0;
 
-        const elemento = document.getElementById('checklist-form');
-        const boton = document.getElementById('btn-descargar');
-        
-        boton.style.display = 'none';
+        document.querySelectorAll('.deck-container').forEach(deck => {
+            deck.addEventListener('touchstart', e => {
+                touchstartX = e.changedTouches[0].screenX;
+            });
 
-        const placa = document.getElementById('placa').value.toUpperCase().trim();
-        const fecha = document.getElementById('fecha').value;
-        
-        const opciones = {
-            margin:       [8, 8, 8, 8],
-            filename:     `Checklist_${placa}_${fecha}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true, scrollX: 0, scrollY: 0 },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak:    { mode: ['css', 'legacy'] }
-        };
-
-        html2pdf().set(opciones).from(elemento).save().then(() => {
-            boton.style.display = 'block';
-        }).catch(err => {
-            console.error(err);
-            boton.style.display = 'block';
+            deck.addEventListener('touchend', e => {
+                touchendX = e.changedTouches[0].screenX;
+                const activeView = document.querySelector('.view-section.active-view');
+                if (activeView) {
+                    if (touchendX < touchstartX - 50) changeSlide(activeView.id, 1);
+                    if (touchendX > touchstartX + 50) changeSlide(activeView.id, -1);
+                }
+            });
         });
-    }
-</script>
-
+    </script>
 </body>
 </html>
